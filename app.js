@@ -18,7 +18,7 @@ app.set('view engine', 'jade');
 //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
 app.use(logger('dev'));
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.urlencoded({extended: false}));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
@@ -26,43 +26,28 @@ app.use('/', index);
 app.use('/users', users);
 
 // catch 404 and forward to error handler
-app.use(function(req, res, next) {
-  var err = new Error('Not Found');
-  err.status = 404;
-  next(err);
+app.use(function (req, res, next) {
+    var err = new Error('Not Found');
+    err.status = 404;
+    next(err);
 });
 
 // error handler
-app.use(function(err, req, res, next) {
-  // set locals, only providing error in development
-  res.locals.message = err.message;
-  res.locals.error = req.app.get('env') === 'development' ? err : {};
+app.use(function (err, req, res, next) {
+    // set locals, only providing error in development
+    res.locals.message = err.message;
+    res.locals.error = req.app.get('env') === 'development' ? err : {};
 
-  // render the error page
-  res.status(err.status || 500);
-  res.render('error');
+    // render the error page
+    res.status(err.status || 500);
+    res.render('error');
 });
 
 // creation connexion bdd
-var mysql = require('mysql');
-var db = mysql.createConnection({
+const Sequelize = require('sequelize');
+const sequelize = new Sequelize('studycom', 'root', '', {
     host: 'localhost',
-    user: 'root',
-    password: '',
-    database : 'studycom'
-});
-
-
-db.connect(function(err) {
-  if(err) {
-      console.log(err);
-  }
-  else {
-      console.log("Connected!");
-      db.query("SELECT login FROM users", function (err, results, fields) {
-        console.log(results);
-      });
-  }
+    dialect: 'mysql'
 });
 
 
@@ -85,7 +70,7 @@ var io = require('socket.io').listen(server);
 io.sockets.on('connection', function (socket) {
 
     console.log('a user connected');
-    socket.on('disconnect', function(){
+    socket.on('disconnect', function () {
         console.log('user disconnected');
     });
 
@@ -101,6 +86,23 @@ io.sockets.on('connection', function (socket) {
 
     });
 });
-server.listen(8080);
 
 module.exports = app;
+
+
+var router = express.Router();
+
+router.use(function (req, res, next) {
+    // do logging
+    console.log('Something is happening.');
+    next(); // make sure we go to the next routes and don't stop here
+});
+
+router.get('/testNode', function (req, res) {
+    console.log('home api');
+    res.json({message: 'hooray! welcome to our api!'});
+});
+
+app.use("/api", router);
+
+server.listen(8080);
