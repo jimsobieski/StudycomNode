@@ -1,3 +1,4 @@
+var bcrypt = require('bcrypt-nodejs');
 const Sequelize = require('sequelize');
 const sequelize = new Sequelize('studycom', 'root', '', {
     host: 'localhost',
@@ -35,6 +36,16 @@ const User = sequelize.define('users', {
     {
         timestamps: false
     });
+
+User.sync({force: false}).then(() =>{
+    return User.create({
+    name: 'joe le triso',
+    login: 'jojovatard',
+    email: 'jojovatatrd@yopmail.com',
+    password: bcrypt.hashSync('yolo'),
+    idtype: 1,
+})
+});
 
 
 const Topic = sequelize.define('topic', {
@@ -101,6 +112,7 @@ const UserContact = sequelize.define('usercontact', {
         timestamps: false,
         tableName: 'usercontact',
     });
+console.log(UserContact);
 
 
 

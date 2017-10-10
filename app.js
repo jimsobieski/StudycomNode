@@ -4,7 +4,7 @@ var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
-
+var bcrypt = require('bcrypt-nodejs');
 var index = require('./routes/index');
 var users = require('./routes/users');
 
@@ -44,11 +44,9 @@ app.use(function (err, req, res, next) {
 });
 
 // creation connexion bdd
-const Sequelize = require('sequelize');
-const sequelize = new Sequelize('studycom', 'root', '', {
-    host: 'localhost',
-    dialect: 'mysql'
-});
+require('./database/model');
+require('./database/feed');
+
 
 
 //SOCKETS
