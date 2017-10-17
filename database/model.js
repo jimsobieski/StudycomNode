@@ -11,7 +11,6 @@ var UserTopic  = require('./models/usertopic').TopicUser();
 var UserContact  = require('./models/usercontact').UserContact();
 var Message  = require('./models/message').Message();
 
-console.log(module);
 TypeUser.sync();
 User.sync();
 Topic.sync();
