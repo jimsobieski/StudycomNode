@@ -4,12 +4,16 @@ const sequelize = new Sequelize('studycom', 'root', '', {
     dialect: 'mysql'
 });
 
+var User = require('./user').User();
+var Topic = require('./topic').Topic();
+
 
 module.exports = {
     TopicUser : function () {
         return sequelize.define('topicuser', {
                 idTopic: {
                     type: Sequelize.INTEGER,
+                    primaryKey: true,
                     references : {
                         model: require('./topic').Topic(),
                         key: 'id'
@@ -17,6 +21,7 @@ module.exports = {
                 },
                 idUser: {
                     type: Sequelize.INTEGER,
+                    primaryKey: true,
                     references : {
                         model: require('./user').User(),
                         key: 'id'
@@ -30,7 +35,6 @@ module.exports = {
     }
 };
 
-var User = require('./user').User();
-var Topic = require('./topic').Topic();
-User.belongsToMany(Topic, { through: 'topicuser'});
-Topic.belongsToMany(User, { through: 'topicuser'});
+
+User.belongsToMany(Topic, { through: 'topicuser', foreignKey: 'idUser'});
+Topic.belongsToMany(User, { through: 'topicuser', foreignKey: 'idTopic'});
