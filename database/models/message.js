@@ -14,10 +14,20 @@ module.exports = {
                     type: Sequelize.STRING
                 },
                 idAuthor: {
-                    type: Sequelize.INTEGER
+                    type: Sequelize.INTEGER,
+
+                    references : {
+                        model: require('./user').User(),
+                        key: 'id'
+                    }
                 },
                 idTopic: {
-                    type: Sequelize.INTEGER
+                    type: Sequelize.INTEGER,
+
+                    references : {
+                        model: require('./topic').Topic(),
+                        key: 'id'
+                    }
                 }
             },
             {
