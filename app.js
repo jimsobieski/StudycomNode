@@ -45,7 +45,6 @@ app.use(function (err, req, res, next) {
 
 // creation connexion bdd
 require('./database/model');
-require('./database/feed');
 
 
 
