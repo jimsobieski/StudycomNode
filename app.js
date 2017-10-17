@@ -48,12 +48,175 @@ module.exports = app;
 
 var router = express.Router();
 
-router.route('/test')
+// USERS REQUESTS
+router.route('/user/:idUser')
+    .get(function(req,res){
+        res.status(200).send({user: "loic"});
+    });
 
-.get(function(req,res){
-    console.log("test");
-    res.status(200).send({message : "Hey je t'en*****"});
-});
+router.route('/user/update')
+    .post(function(req,res){
+        res.status(200).send({user: "loic", modified: "yes"});
+    });
+
+router.route('/user/:idUser/topic')
+    .get(function(req,res){
+        res.status(200).send({user: "loic", topic: "best topic"});
+    });
+
+router.route('/user/:idUser/contacts/get')
+    .get(function(req,res){
+        res.status(200).send({user: "loic", topic: "best topic"});
+    });
+
+router.route('/user/:idAuthor/number/contacts')
+    .get(function(req,res){
+        res.status(200).send({user: "loic", topic: "best topic"});
+    });
+
+router.route('/user/:idUser/user2/:idAuthor/mutual/contacts')
+    .get(function(req,res){
+        res.status(200).send({user: "loic", topic: "best topic"});
+    });
+
+router.route('/user/:idUser/user2/:idAuthor/mutual/topics')
+    .get(function(req,res){
+        res.status(200).send({user: "loic", topic: "best topic"});
+    });
+
+router.route('/user/:idUser/topic/:idTopic/leave')
+    .get(function(req,res){
+        res.status(200).send({user: "loic", topic: "best topic"});
+    });
+
+
+// TOPIC REQUESTS
+router.route('/topic/sendMessage')
+    .post(function(req,res){
+        res.status(200).send({user: "loic", topic: "best topic"});
+    });
+
+router.route('/user/:idUser/topic/:idTopic/delete')
+    .get(function(req,res){
+        res.status(200).send({user: "loic", topic: "best topic"});
+    });
+
+router.route('/user/:idUser/contact/:idContact/delete')
+    .get(function(req,res){
+        res.status(200).send({user: "loic", topic: "best topic"});
+    });
+
+router.route('/topic/:idTopic/member/:idUser/delete')
+    .get(function(req,res){
+        res.status(200).send({user: "loic", topic: "best topic"});
+    });
+
+router.route('/topic/userMember')
+    .post(function(req,res){
+        res.status(200).send({user: "loic", topic: "best topic"});
+    });
+
+router.route('/topic/:idTopic/get')
+    .get(function(req,res){
+        res.status(200).send({user: "loic", topic: "best topic"});
+    });
+
+router.route('/topic/:idTopic/posts')
+    .get(function(req,res){
+        res.status(200).send({user: "loic", topic: "best topic"});
+    });
+
+router.route('/topic/:idTopic/users')
+    .get(function(req,res){
+        res.status(200).send({user: "loic", topic: "best topic"});
+    });
+
+router.route('/user/:idUser/topic')
+    .post(function(req,res){
+        res.status(200).send({user: "loic", topic: "best topic"});
+    });
+
+router.route('/topic/delete')
+    .post(function(req,res){
+        res.status(200).send({user: "loic", topic: "best topic"});
+    });
+
+router.route('/topic/modify')
+    .post(function(req,res){
+        res.status(200).send({user: "loic", topic: "best topic"});
+    });
+
+router.route('/topic/addContact')
+    .post(function(req,res){
+        res.status(200).send({user: "loic", topic: "best topic"});
+    });
+
+router.route('/topic/user/delete')
+    .post(function(req,res){
+        res.status(200).send({user: "loic", topic: "best topic"});
+    });
+
+// CONTACTS REQUESTS
+router.route('/contact/:idContact')
+    .get(function(req,res){
+        res.status(200).send({user: "loic", topic: "best topic"});
+    });
+
+router.route('/contact/:idContact/get')
+    .get(function(req,res){
+        res.status(200).send({user: "loic", topic: "best topic"});
+    });
+
+router.route('/user/:idUser/contact/topic/:idContact/get')
+    .get(function(req,res){
+        res.status(200).send({user: "loic", topic: "best topic"});
+    });
+
+router.route('/user/:idUser/contact/:idContact/delete')
+    .get(function(req,res){
+        res.status(200).send({user: "loic", topic: "best topic"});
+    });
+
+router.route('/user/:idUser/contact/request')
+    .post(function(req,res){
+        res.status(200).send({user: "loic", topic: "best topic"});
+    });
+
+router.route('/user/:idUser/requests')
+    .get(function(req,res){
+        res.status(200).send({user: "loic", topic: "best topic"});
+    });
+
+router.route('/user/:idUser/request/:idRequest/accept')
+    .get(function(req,res){
+        res.status(200).send({user: "loic", topic: "best topic"});
+    });
+
+router.route('/user/:idUser/request/:idRequest/refuse')
+    .get(function(req,res){
+        res.status(200).send({user: "loic", topic: "best topic"});
+    });
+
+router.route('/author/:idAuthor/get')
+    .get(function(req,res){
+        res.status(200).send({user: "loic", topic: "best topic"});
+    });
+
+// AUTHENTICATION REQUESTS
+router.route('/logout')
+    .post(function(req,res){
+        res.status(200).send({user: "loic", topic: "best topic"});
+    });
+
+router.route('/signin')
+    .post(function(req,res){
+        res.status(200).send({user: "loic", topic: "best topic"});
+    });
+
+router.route('/signout')
+    .post(function(req,res){
+        res.status(200).send({user: "loic", topic: "best topic"});
+    });
 
 app.use(router);
 
