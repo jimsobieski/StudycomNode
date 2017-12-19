@@ -1,9 +1,25 @@
 var express = require('express');
 
 var app = express();
+var bodyParser = require('body-parser');
+var jwt = require('jsonwebtoken');
+
+// configure app to use bodyParser()
+// this will let us get the data from a POST
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json());
+var router = express.Router();
+var port = process.env.PORT || 8081;
+
+app.use(function(req, res, next) {
+    res.header("Access-Control-Allow-Origin", "*");
+    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization");
+    next();
+});
+
 
 // creation connexion bdd
-require('./database/model');
+var db = require('./database/model');
 
 
 
@@ -46,178 +62,58 @@ io.sockets.on('connection', function (socket) {
 module.exports = app;
 
 
-var router = express.Router();
-
 // USERS REQUESTS
-router.route('/user/:idUser')
-    .get(function(req,res){
-        res.status(200).send({user: "loic"});
-    });
-
-router.route('/user/update')
-    .post(function(req,res){
-        res.status(200).send({user: "loic", modified: "yes"});
-    });
-
-router.route('/user/:idUser/topic')
-    .get(function(req,res){
-        res.status(200).send({user: "loic", topic: "best topic"});
-    });
-
-router.route('/user/:idUser/contacts/get')
-    .get(function(req,res){
-        res.status(200).send({user: "loic", topic: "best topic"});
-    });
-
-router.route('/user/:idAuthor/number/contacts')
-    .get(function(req,res){
-        res.status(200).send({user: "loic", topic: "best topic"});
-    });
-
-router.route('/user/:idUser/user2/:idAuthor/mutual/contacts')
-    .get(function(req,res){
-        res.status(200).send({user: "loic", topic: "best topic"});
-    });
-
-router.route('/user/:idUser/user2/:idAuthor/mutual/topics')
-    .get(function(req,res){
-        res.status(200).send({user: "loic", topic: "best topic"});
-    });
-
-router.route('/user/:idUser/topic/:idTopic/leave')
-    .get(function(req,res){
-        res.status(200).send({user: "loic", topic: "best topic"});
-    });
-
 
 // TOPIC REQUESTS
-router.route('/topic/sendMessage')
-    .post(function(req,res){
-        res.status(200).send({user: "loic", topic: "best topic"});
-    });
 
-router.route('/user/:idUser/topic/:idTopic/delete')
-    .get(function(req,res){
-        res.status(200).send({user: "loic", topic: "best topic"});
-    });
-
-router.route('/user/:idUser/contact/:idContact/delete')
-    .get(function(req,res){
-        res.status(200).send({user: "loic", topic: "best topic"});
-    });
-
-router.route('/topic/:idTopic/member/:idUser/delete')
-    .get(function(req,res){
-        res.status(200).send({user: "loic", topic: "best topic"});
-    });
-
-router.route('/topic/userMember')
-    .post(function(req,res){
-        res.status(200).send({user: "loic", topic: "best topic"});
-    });
-
-router.route('/topic/:idTopic/get')
-    .get(function(req,res){
-        res.status(200).send({user: "loic", topic: "best topic"});
-    });
-
-router.route('/topic/:idTopic/posts')
-    .get(function(req,res){
-        res.status(200).send({user: "loic", topic: "best topic"});
-    });
-
-router.route('/topic/:idTopic/users')
-    .get(function(req,res){
-        res.status(200).send({user: "loic", topic: "best topic"});
-    });
-
-router.route('/user/:idUser/topic')
-    .post(function(req,res){
-        res.status(200).send({user: "loic", topic: "best topic"});
-    });
-
-router.route('/topic/delete')
-    .post(function(req,res){
-        res.status(200).send({user: "loic", topic: "best topic"});
-    });
-
-router.route('/topic/modify')
-    .post(function(req,res){
-        res.status(200).send({user: "loic", topic: "best topic"});
-    });
-
-router.route('/topic/addContact')
-    .post(function(req,res){
-        res.status(200).send({user: "loic", topic: "best topic"});
-    });
-
-router.route('/topic/user/delete')
-    .post(function(req,res){
-        res.status(200).send({user: "loic", topic: "best topic"});
-    });
 
 // CONTACTS REQUESTS
-router.route('/contact/:idContact')
-    .get(function(req,res){
-        res.status(200).send({user: "loic", topic: "best topic"});
-    });
-
-router.route('/contact/:idContact/get')
-    .get(function(req,res){
-        res.status(200).send({user: "loic", topic: "best topic"});
-    });
-
-router.route('/user/:idUser/contact/topic/:idContact/get')
-    .get(function(req,res){
-        res.status(200).send({user: "loic", topic: "best topic"});
-    });
-
-router.route('/user/:idUser/contact/:idContact/delete')
-    .get(function(req,res){
-        res.status(200).send({user: "loic", topic: "best topic"});
-    });
-
-router.route('/user/:idUser/contact/request')
-    .post(function(req,res){
-        res.status(200).send({user: "loic", topic: "best topic"});
-    });
-
-router.route('/user/:idUser/requests')
-    .get(function(req,res){
-        res.status(200).send({user: "loic", topic: "best topic"});
-    });
-
-router.route('/user/:idUser/request/:idRequest/accept')
-    .get(function(req,res){
-        res.status(200).send({user: "loic", topic: "best topic"});
-    });
-
-router.route('/user/:idUser/request/:idRequest/refuse')
-    .get(function(req,res){
-        res.status(200).send({user: "loic", topic: "best topic"});
-    });
-
-router.route('/author/:idAuthor/get')
-    .get(function(req,res){
-        res.status(200).send({user: "loic", topic: "best topic"});
-    });
 
 // AUTHENTICATION REQUESTS
+
 router.route('/logout')
     .post(function(req,res){
-        res.status(200).send({user: "loic", topic: "best topic"});
+        db.User.findOne({
+            where: {token: req.body.token}
+        }).then(function(){
+            db.User.update({
+                token: ''
+            }, { where: {token: req.body.token}
+            });
+            res.json({ token: '' });
+        });
     });
 
 router.route('/signin')
     .post(function(req,res){
-        res.status(200).send({user: "loic", topic: "best topic"});
+        db.User.findOne({
+            where: {email: req.body.email, password: req.body.password},
+        }).then(function(){
+            var token = jwt.sign({email: req.body.email, password: req.body.password}, 'shhhh');
+            db.User.update({
+                token: token
+            }, { where: {email: req.body.email, password: req.body.password}
+            });
+            res.json({ token: token });
+        });
+
     });
 
-router.route('/signout')
+router.route('/signup')
     .post(function(req,res){
         res.status(200).send({user: "loic", topic: "best topic"});
     });
 
-app.use(router);
+router.route('/user')
+    .post(function(req,res) {
+        var user = db.User.findOne({
+            where: {token: req.body.token},
+        }).then(user => {
+            res.json(user);
+        });
 
-app.listen(8080);
+    })
+
+app.use('/api', router);
+
+app.listen(port);

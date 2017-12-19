@@ -11,10 +11,16 @@ var UserTopic  = require('./models/usertopic').TopicUser();
 var UserContact  = require('./models/usercontact').UserContact();
 var Message  = require('./models/message').Message();
 
-TypeUser.sync();
-User.sync();
-Topic.sync();
-UserTopic.sync();
-UserContact.sync();
-Message.sync();
+module.exports = {
+    TypeUser: require('./models/typeuser').TypeUser(),
 
+    User: require('./models/user').User(),
+
+    Topic: require('./models/topic').Topic(),
+
+    UserTopic: require('./models/usertopic').TopicUser(),
+
+    UserContact: require('./models/usercontact').UserContact(),
+
+    Message: require('./models/message').Message()
+};
