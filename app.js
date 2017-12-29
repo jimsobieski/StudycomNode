@@ -64,6 +64,16 @@ module.exports = app;
 
 // USERS REQUESTS
 
+router.route('/user')
+    .post(function(req,res) {
+        var user = db.User.findOne({
+            where: {token: req.body.token},
+        }).then(user => {
+            res.json(user);
+    });
+
+    });
+
 // TOPIC REQUESTS
 
 
@@ -103,16 +113,6 @@ router.route('/signup')
     .post(function(req,res){
         res.status(200).send({user: "loic", topic: "best topic"});
     });
-
-router.route('/user')
-    .post(function(req,res) {
-        var user = db.User.findOne({
-            where: {token: req.body.token},
-        }).then(user => {
-            res.json(user);
-        });
-
-    })
 
 app.use('/api', router);
 

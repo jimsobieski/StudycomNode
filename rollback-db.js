@@ -1,10 +1,19 @@
 var db = require('./database/model');
 
 
-db.TypeUser.sync();
+db.TypeUser.sync().then(function() {
+    db.User.sync().then(function() {
+        db.Topic.sync().then(function() {
+            db.UserTopic.sync().then(function() {
+                db.UserContact.sync().then(function() {
+                    db.Message.sync();
+                })
+            })
+        });
+    });
+});
 
-db.User.sync();
-db.Topic.sync();
-db.UserTopic.sync();
-db.UserContact.sync();
-db.Message.sync();
+
+
+
+
