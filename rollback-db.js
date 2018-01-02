@@ -62,6 +62,7 @@ db.TypeUser.sync().then(function() {
                 });
                 db.UserContact.sync().then(function() {
                     db.Message.sync();
+                    db.File.sync();
                 })
             })
         });

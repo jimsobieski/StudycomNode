@@ -12,8 +12,9 @@ var router = express.Router();
 var port = process.env.PORT || 8081;
 
 app.use(function(req, res, next) {
-    res.header("Access-Control-Allow-Origin", "*");
+    res.header("Access-Control-Allow-Origin", "http://localhost");
     res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization");
+    res.header('Access-Control-Allow-Credentials', 'true');
     next();
 });
 
@@ -28,44 +29,6 @@ const sequelize = new Sequelize('studycom', 'root', '', {
 var db = require('./database/model');
 
 
-
-//SOCKETS
-var http = require('http');
-var fs = require('fs');
-
-// Chargement du fichier index.html affiché au client
-var server = http.createServer(function (req, res) {
-    fs.readFile('./index.html', 'utf-8', function (error, content) {
-        res.writeHead(200, {"Content-Type": "text/html"});
-        res.end(content);
-    });
-});
-
-// Chargement de socket.io
-var io = require('socket.io').listen(server);
-
-// Quand un client se connecte, on le note dans la console
-io.sockets.on('connection', function (socket) {
-
-    console.log('a user connected');
-    socket.on('disconnect', function () {
-        console.log('user disconnected');
-    });
-
-    socket.on('joinChannel', function (channel) {
-        console.log('Un user est connecté aut topic !');
-        socket.join(channel);
-        io.in(channel).emit('joinChannel', 'hello topic');
-
-        socket.on('newMessage', function (message) {
-            console.log(message);
-            io.in(channel).emit('newMessage', message);
-        });
-
-    });
-});
-
-module.exports = app;
 
 
 // USERS REQUESTS
@@ -91,6 +54,8 @@ router.route('/user/:idUser/topic')
     });
 
 // CONTACTS REQUESTS
+
+
 
 // AUTHENTICATION REQUESTS
 
@@ -129,4 +94,37 @@ router.route('/signup')
 
 app.use('/api', router);
 
-app.listen(port);
+var server = app.listen(port);
+
+
+//SOCKETS
+var http = require('http');
+var fs = require('fs');
+
+
+
+// Chargement de socket.io
+var io = require('socket.io').listen(server);
+
+// Quand un client se connecte, on le note dans la console
+io.sockets.on('connection', function (socket) {
+
+    console.log('a user connected');
+    socket.on('disconnect', function () {
+        console.log('user disconnected');
+    });
+
+    socket.on('joinChannel', function (channel) {
+        console.log('Un user est connecté aut topic !');
+        socket.join(channel);
+        io.in(channel).emit('joinChannel', 'hello topic');
+
+        socket.on('newMessage', function (message) {
+            console.log(message);
+            io.in(channel).emit('newMessage', message);
+        });
+
+    });
+});
+
+module.exports = app;

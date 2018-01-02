@@ -10,6 +10,7 @@ var Topic  = require('./models/topic').Topic();
 var UserTopic  = require('./models/usertopic').TopicUser();
 var UserContact  = require('./models/usercontact').UserContact();
 var Message  = require('./models/message').Message();
+var File  = require('./models/file').File();
 
 module.exports = {
     TypeUser: require('./models/typeuser').TypeUser(),
@@ -22,5 +23,7 @@ module.exports = {
 
     UserContact: require('./models/usercontact').UserContact(),
 
-    Message: require('./models/message').Message()
+    Message: require('./models/message').Message(),
+
+    File: require('./models/file').File()
 };
