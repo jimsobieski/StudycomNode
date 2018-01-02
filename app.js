@@ -17,6 +17,12 @@ app.use(function(req, res, next) {
     next();
 });
 
+const Sequelize = require('sequelize');
+const sequelize = new Sequelize('studycom', 'root', '', {
+    host: 'localhost',
+    dialect: 'mysql'
+});
+
 
 // creation connexion bdd
 var db = require('./database/model');
@@ -75,7 +81,14 @@ router.route('/user')
     });
 
 // TOPIC REQUESTS
-
+router.route('/user/:idUser/topic')
+    .get(function(req, res) {
+        sequelize.query('SELECT * FROM topics WHERE id IN (SELECT idTopic FROM topicuser WHERE idUser ='+req.params.idUser+')',
+            { type: sequelize.QueryTypes.SELECT})
+            .then(result => {
+                res.json(result);
+            });
+    });
 
 // CONTACTS REQUESTS
 
