@@ -105,6 +105,26 @@ router.route('/topic/:idTopic/posts')
 
 // CONTACTS REQUESTS
 
+router.route('/user/:userId/contacts')
+    .get(function(req, res) {
+       sequelize.query('SELECT * FROM users WHERE users.id IN (SELECT user1 FROM usercontact WHERE user2 = '+req.params.userId+' AND valid = 1) ' +
+            'OR users.id IN (SELECT user2 FROM usercontact WHERE user1 = '+req.params.userId+' AND valid = 1)', {type: sequelize.QueryTypes.SELECT})
+        .then(result => {
+            res.json(result);
+        });
+    });
+
+
+router.route('/user/:userId/requests')
+    .get(function(req, res) {
+        sequelize.query('SELECT * FROM users WHERE users.id IN (SELECT user1 FROM usercontact WHERE user2 = '+req.params.userId+' AND valid = 0) ' +
+            'OR users.id IN (SELECT user2 FROM usercontact WHERE user1 = '+req.params.userId+' AND valid = 0)', {type: sequelize.QueryTypes.SELECT})
+            .then(result => {
+            res.json(result);
+    });
+    });
+
+
 
 
 // AUTHENTICATION REQUESTS
@@ -139,7 +159,26 @@ router.route('/signin')
 
 router.route('/signup')
     .post(function(req,res){
-        res.status(200).send({user: "loic", topic: "best topic"});
+        db.User.create({
+            login: req.body.login,
+            name: req.body.name,
+            email: req.body.email,
+            password: req.body.password,
+            idtype: req.body.idtype
+        }).then(result => {
+
+            db.User.findOne({
+                where: {email: result.email, password: result.password}
+        }).then(function() {
+            var token = jwt.sign({email: req.body.email, password: req.body.password}, 'shhhh');
+            db.User.update({
+                token: token
+            }, { where: {email: req.body.email, password: req.body.password}
+            });
+            res.json({ token: token });
+        })
+
+        });
     });
 
 app.use('/api', router);

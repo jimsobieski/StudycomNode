@@ -61,6 +61,16 @@ db.TypeUser.sync().then(function() {
                     idUser: 1
                 });
                 db.UserContact.sync().then(function() {
+                    db.Topic.create({
+                        dateCreation: new Date(),
+                        idAuthor: 1
+                    });
+                    db.UserContact.create({
+                        user1: 1,
+                        user2: 2,
+                        idTopic: 4,
+                        valid: true
+                    });
                     db.Message.sync();
                     db.File.sync();
                 })
