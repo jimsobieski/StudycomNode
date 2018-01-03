@@ -18,14 +18,14 @@ app.use(function(req, res, next) {
     next();
 });
 
+// creation connexion bdd
+
 const Sequelize = require('sequelize');
 const sequelize = new Sequelize('studycom', 'root', '', {
     host: 'localhost',
     dialect: 'mysql'
 });
 
-
-// creation connexion bdd
 var db = require('./database/model');
 
 
@@ -40,8 +40,8 @@ router.route('/user')
         }).then(user => {
             res.json(user);
     });
-
     });
+
 
 // TOPIC REQUESTS
 router.route('/user/:idUser/topic')
@@ -51,6 +51,44 @@ router.route('/user/:idUser/topic')
             .then(result => {
                 res.json(result);
             });
+    });
+
+
+router.route('/topic/:idTopic')
+    .get(function(req, res) {
+        db.Topic.findById(req.params.idTopic).then(result => {
+            res.json(result);
+        });
+    });
+
+router.route('/topic/:idTopic/users')
+    .get(function(req,res) {
+        sequelize.query('SELECT * FROM users, topicuser WHERE users.id = topicuser.idUser AND topicuser.idTopic ='+req.params.idTopic,
+            {type: sequelize.QueryTypes.SELECT})
+        .then(result => {
+        res.json(result);
+        });
+    });
+
+router.route('/topic/:idTopic/posts')
+    .get(function(req, res) {
+        sequelize.query('SELECT * FROM messages, users WHERE messages.idAuthor = users.id AND idTopic = '+req.params.idTopic,
+            {type: sequelize.QueryTypes.SELECT})
+            .then(result => {
+            res.json(result);
+        });
+    });
+
+router.route('/topic/:idTopic/posts')
+    .post(function(req, res) {
+       db.Message.create({
+           text: req.params.text,
+           idAuthor: req.params.idAuthor,
+           idTopic: req.params.idTopic,
+           dateCreation: new Date()
+       }).then(result => {
+           res.json(result);
+       });
     });
 
 // CONTACTS REQUESTS
