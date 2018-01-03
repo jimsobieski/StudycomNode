@@ -15,6 +15,7 @@ app.use(function(req, res, next) {
     res.header("Access-Control-Allow-Origin", "http://localhost");
     res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization");
     res.header('Access-Control-Allow-Credentials', 'true');
+    res.header('Access-Control-Allow-Method', 'GET, POST, OPTIONS, PUT, DELETE')
     next();
 });
 
@@ -53,12 +54,23 @@ router.route('/user/:idUser/topic')
             });
     });
 
+router.route('/user/:idUser/topic/:idTopic')
+    .delete(function(req, res) {
+        sequelize.query('DELETE FROM topicuser WHERE idTopic = '+req.params.idTopic+ ' AND idUser = '+req.params.idUser,
+            { type: sequelize.QueryTypes.SELECT});
+    });
+
 
 router.route('/topic/:idTopic')
     .get(function(req, res) {
         db.Topic.findById(req.params.idTopic).then(result => {
             res.json(result);
         });
+    });
+
+router.route('/topic/:idTopic')
+    .delete(function(req, res) {
+       sequelize.query('DELETE FROM topic WHERE id = '+req.params.idTopic+ ' AND idAdmin = '+req.body.idAuthor)
     });
 
 router.route('/topic/:idTopic/users')
@@ -82,8 +94,8 @@ router.route('/topic/:idTopic/posts')
 router.route('/topic/:idTopic/posts')
     .post(function(req, res) {
        db.Message.create({
-           text: req.params.text,
-           idAuthor: req.params.idAuthor,
+           text: req.body.text,
+           idAuthor: req.body.idAuthor,
            idTopic: req.params.idTopic,
            dateCreation: new Date()
        }).then(result => {
