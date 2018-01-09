@@ -62,8 +62,9 @@ db.TypeUser.sync().then(function() {
                 });
                 db.UserContact.sync().then(function() {
                     db.Topic.create({
+                        topic: 'contact',
                         dateCreation: new Date(),
-                        idAuthor: 1
+                        idAdmin: 1
                     });
                     db.UserContact.create({
                         user1: 1,

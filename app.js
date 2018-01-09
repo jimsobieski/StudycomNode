@@ -54,6 +54,22 @@ router.route('/user/:idUser/topic')
             });
     });
 
+router.route('/user/:idUser/topic')
+    .post(function(req,res) {
+        db.Topic.create({
+            nom: req.body.name,
+            idAdmin: req.params.idUser,
+            dateCreation: new Date()
+        }).then(function(topic) {
+            db.UserTopic.create({
+                idTopic: topic.id,
+                idUser: req.params.idUser
+            });
+            res.json(topic);
+        })
+    });
+
+
 router.route('/user/:idUser/topic/:idTopic')
     .delete(function(req, res) {
         sequelize.query('DELETE FROM topicuser WHERE idTopic = '+req.params.idTopic+ ' AND idUser = '+req.params.idUser,
